@@ -1,0 +1,6 @@
+{
+  "name": "MGMP PJOK SMP Purbalingga",
+  "description": "Sistem Informasi & Manajemen Organisasi MGMP PJOK SMP Kabupaten Purbalingga - Administrasi, Keanggotaan, Agenda, Presensi QR, Bank Perangkat Pembelajaran, dan Kolaborasi Guru.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

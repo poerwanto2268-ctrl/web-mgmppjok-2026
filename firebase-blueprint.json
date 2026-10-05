@@ -1,0 +1,295 @@
+{
+  "entities": {
+    "OrganizationSetting": {
+      "title": "OrganizationSetting",
+      "description": "General settings and identity of the MGMP PJOK organization",
+      "type": "object",
+      "properties": {
+        "orgName": { "type": "string", "maxLength": 150 },
+        "tagline": { "type": "string", "maxLength": 200 },
+        "educationLevel": { "type": "string", "maxLength": 50 },
+        "region": { "type": "string", "maxLength": 100 },
+        "secretariatAddress": { "type": "string", "maxLength": 300 },
+        "email": { "type": "string", "maxLength": 100 },
+        "contactPhone": { "type": "string", "maxLength": 30 },
+        "logoUrl": { "type": "string", "maxLength": 500 },
+        "logoInstansiUrl": { "type": "string", "maxLength": 500 },
+        "period": { "type": "string", "maxLength": 50 },
+        "activeAcademicYear": { "type": "string", "maxLength": 30 },
+        "vision": { "type": "string", "maxLength": 1000 },
+        "mission": { "type": "string", "maxLength": 2000 },
+        "welcomeMessage": { "type": "string", "maxLength": 2000 },
+        "welcomeLeaderName": { "type": "string", "maxLength": 100 },
+        "welcomeLeaderPhoto": { "type": "string", "maxLength": 500 },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["orgName", "region", "activeAcademicYear"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Registered teacher member of MGMP PJOK",
+      "type": "object",
+      "properties": {
+        "memberNumber": { "type": "string", "maxLength": 50 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "title": { "type": "string", "maxLength": 50 },
+        "nip": { "type": "string", "maxLength": 30 },
+        "nuptk": { "type": "string", "maxLength": 30 },
+        "gender": { "type": "string", "enum": ["Laki-laki", "Perempuan"] },
+        "birthPlace": { "type": "string", "maxLength": 100 },
+        "birthDate": { "type": "string", "maxLength": 20 },
+        "schoolId": { "type": "string", "maxLength": 100 },
+        "schoolName": { "type": "string", "maxLength": 150 },
+        "subdistrict": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 100 },
+        "photoUrl": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["Aktif", "Non-Aktif", "Mutasi", "Pensiun"] },
+        "joinedDate": { "type": "string", "maxLength": 30 },
+        "notes": { "type": "string", "maxLength": 500 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["fullName", "schoolName", "subdistrict", "status"]
+    },
+    "School": {
+      "title": "School",
+      "description": "Junior High School in the region",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 150 },
+        "npsn": { "type": "string", "maxLength": 30 },
+        "subdistrict": { "type": "string", "maxLength": 100 },
+        "address": { "type": "string", "maxLength": 300 },
+        "principalName": { "type": "string", "maxLength": 150 },
+        "status": { "type": "string", "enum": ["Negeri", "Swasta"] }
+      },
+      "required": ["name", "subdistrict", "status"]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "MGMP agenda, workshop, seminar, sports, or routine meeting",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "type": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "date": { "type": "string", "maxLength": 30 },
+        "time": { "type": "string", "maxLength": 50 },
+        "location": { "type": "string", "maxLength": 200 },
+        "speaker": { "type": "string", "maxLength": 150 },
+        "pic": { "type": "string", "maxLength": 150 },
+        "quota": { "type": "number" },
+        "status": { "type": "string", "enum": ["Direncanakan", "Pendaftaran", "Berlangsung", "Selesai", "Dibatalkan"] },
+        "documentationUrls": { "type": "string", "maxLength": 1000 },
+        "materialUrls": { "type": "string", "maxLength": 1000 },
+        "qrCodeToken": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string" },
+        "createdBy": { "type": "string", "maxLength": 100 }
+      },
+      "required": ["title", "type", "date", "status"]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Attendance record for an activity",
+      "type": "object",
+      "properties": {
+        "activityId": { "type": "string", "maxLength": 128 },
+        "memberId": { "type": "string", "maxLength": 128 },
+        "memberName": { "type": "string", "maxLength": 150 },
+        "schoolName": { "type": "string", "maxLength": 150 },
+        "nip": { "type": "string", "maxLength": 50 },
+        "timestamp": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["Hadir", "Izin", "Sakit", "Tugas Luar"] },
+        "method": { "type": "string", "enum": ["QR", "Manual"] },
+        "notes": { "type": "string", "maxLength": 250 }
+      },
+      "required": ["activityId", "memberId", "memberName", "status"]
+    },
+    "LearningResource": {
+      "title": "LearningResource",
+      "description": "PJOK teaching aids, lesson plans, assessments, and learning modules",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 100 },
+        "phase": { "type": "string", "maxLength": 50 },
+        "grade": { "type": "string", "maxLength": 50 },
+        "curriculum": { "type": "string", "maxLength": 100 },
+        "sportTopic": { "type": "string", "maxLength": 100 },
+        "academicYear": { "type": "string", "maxLength": 30 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "fileUrl": { "type": "string", "maxLength": 1000 },
+        "fileName": { "type": "string", "maxLength": 200 },
+        "fileSize": { "type": "string", "maxLength": 50 },
+        "uploaderId": { "type": "string", "maxLength": 128 },
+        "uploaderName": { "type": "string", "maxLength": 150 },
+        "approvalStatus": { "type": "string", "enum": ["Disetujui", "Menunggu", "Ditolak"] },
+        "version": { "type": "string", "maxLength": 20 },
+        "downloadsCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "category", "grade", "sportTopic", "fileUrl"]
+    },
+    "OrgDocument": {
+      "title": "OrgDocument",
+      "description": "Organizational official letters, minutes, and decrees",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 100 },
+        "year": { "type": "string", "maxLength": 20 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "fileUrl": { "type": "string", "maxLength": 1000 },
+        "fileName": { "type": "string", "maxLength": 200 },
+        "fileSize": { "type": "string", "maxLength": 50 },
+        "accessLevel": { "type": "string", "enum": ["Publik", "Anggota", "Pengurus"] },
+        "uploadedBy": { "type": "string", "maxLength": 150 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "category", "fileUrl"]
+    },
+    "Training": {
+      "title": "Training",
+      "description": "Competency training programs and workshops for teachers",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 200 },
+        "instructor": { "type": "string", "maxLength": 150 },
+        "startDate": { "type": "string", "maxLength": 30 },
+        "endDate": { "type": "string", "maxLength": 30 },
+        "location": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 1500 },
+        "quota": { "type": "number" },
+        "hours": { "type": "number" },
+        "certificateTemplate": { "type": "string", "maxLength": 100 },
+        "status": { "type": "string", "enum": ["Buka Pendaftaran", "Sedang Berjalan", "Selesai"] },
+        "registeredMemberIds": { "type": "string", "maxLength": 2000 },
+        "materials": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["title", "instructor", "startDate", "status"]
+    },
+    "Discussion": {
+      "title": "Discussion",
+      "description": "Teacher professional discussion threads",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 250 },
+        "category": { "type": "string", "maxLength": 100 },
+        "content": { "type": "string", "maxLength": 4000 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 150 },
+        "authorSchool": { "type": "string", "maxLength": 150 },
+        "repliesCount": { "type": "number" },
+        "isPinned": { "type": "string", "maxLength": 10 },
+        "isReported": { "type": "string", "maxLength": 10 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "category", "content", "authorName"]
+    },
+    "BestPractice": {
+      "title": "BestPractice",
+      "description": "Teaching innovations and best practices shared by members",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 250 },
+        "authorName": { "type": "string", "maxLength": 150 },
+        "authorSchool": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 100 },
+        "description": { "type": "string", "maxLength": 3000 },
+        "mediaUrl": { "type": "string", "maxLength": 1000 },
+        "mediaType": { "type": "string", "enum": ["Video", "Artikel", "Dokumen", "Gambar"] },
+        "publishedDate": { "type": "string", "maxLength": 30 },
+        "status": { "type": "string", "enum": ["Publik", "Menunggu Moderasi", "Draf"] }
+      },
+      "required": ["title", "authorName", "category", "description", "status"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Organizational news and announcements",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 250 },
+        "category": { "type": "string", "maxLength": 100 },
+        "summary": { "type": "string", "maxLength": 500 },
+        "content": { "type": "string", "maxLength": 5000 },
+        "author": { "type": "string", "maxLength": 100 },
+        "publishedDate": { "type": "string", "maxLength": 30 },
+        "coverUrl": { "type": "string", "maxLength": 500 },
+        "isPinned": { "type": "string", "maxLength": 10 }
+      },
+      "required": ["title", "content", "publishedDate"]
+    },
+    "ImportLog": {
+      "title": "ImportLog",
+      "description": "Log of member import operations from Excel or Google Spreadsheet",
+      "type": "object",
+      "properties": {
+        "timestamp": { "type": "string" },
+        "adminName": { "type": "string", "maxLength": 150 },
+        "adminEmail": { "type": "string", "maxLength": 150 },
+        "sourceType": { "type": "string", "enum": ["Upload Excel", "Google Spreadsheet"] },
+        "sourceName": { "type": "string", "maxLength": 500 },
+        "totalRead": { "type": "number" },
+        "successCount": { "type": "number" },
+        "updatedCount": { "type": "number" },
+        "rejectedCount": { "type": "number" },
+        "duplicateCount": { "type": "number" },
+        "details": { "type": "string", "maxLength": 5000 }
+      },
+      "required": ["timestamp", "adminName", "sourceType", "totalRead"]
+    }
+  },
+  "firestore": {
+    "/settings/{settingId}": {
+      "schema": "OrganizationSetting",
+      "description": "Organization identity and configuration"
+    },
+    "/members/{memberId}": {
+      "schema": "Member",
+      "description": "Teacher membership database"
+    },
+    "/schools/{schoolId}": {
+      "schema": "School",
+      "description": "School database in Purbalingga"
+    },
+    "/activities/{activityId}": {
+      "schema": "Activity",
+      "description": "Organizational activities and agendas"
+    },
+    "/attendances/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Attendance presence records for activities"
+    },
+    "/learningResources/{resourceId}": {
+      "schema": "LearningResource",
+      "description": "PJOK teaching aids repository"
+    },
+    "/documents/{documentId}": {
+      "schema": "OrgDocument",
+      "description": "Official documents archive"
+    },
+    "/trainings/{trainingId}": {
+      "schema": "Training",
+      "description": "Teacher training and development"
+    },
+    "/discussions/{discussionId}": {
+      "schema": "Discussion",
+      "description": "Forum topics"
+    },
+    "/bestPractices/{practiceId}": {
+      "schema": "BestPractice",
+      "description": "Educational best practice collection"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "News and announcements"
+    },
+    "/importLogs/{logId}": {
+      "schema": "ImportLog",
+      "description": "History of bulk member import operations"
+    }
+  }
+}

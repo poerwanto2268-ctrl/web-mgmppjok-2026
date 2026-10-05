@@ -1,0 +1,149 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'sutarman811@guru.smp.belajar.id' ||
+        (request.auth.token.email_verified == true && request.auth.token.email == 'sutarman811@guru.smp.belajar.id') ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Settings
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin() || isSignedIn();
+    }
+
+    // Admins list
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // User Profiles & Roles
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || (isSignedIn() && request.auth.uid == userId);
+    }
+
+    // Members
+    match /members/{memberId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().fullName is string && incoming().fullName.size() <= 150;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    // Schools
+    match /schools/{schoolId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    // Activities
+    match /activities/{activityId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().title is string && incoming().title.size() <= 200;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    // Attendances
+    match /attendances/{attendanceId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && incoming().activityId is string && incoming().memberId is string;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    // Learning Resources
+    match /learningResources/{resourceId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().title is string && incoming().title.size() <= 200;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin() || (isSignedIn() && existing().uploaderId == request.auth.uid);
+    }
+
+    // Documents
+    match /documents/{documentId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().title is string && incoming().title.size() <= 200;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    // Trainings
+    match /trainings/{trainingId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().title is string && incoming().title.size() <= 200;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    // Discussions
+    match /discussions/{discussionId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().title is string && incoming().title.size() <= 250;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin() || (isSignedIn() && existing().authorId == request.auth.uid);
+
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isSignedIn() && incoming().content is string && incoming().content.size() <= 2000;
+        allow update, delete: if isSignedIn();
+      }
+    }
+
+    // Best Practices
+    match /bestPractices/{practiceId} {
+      allow read: if true;
+      allow create: if isSignedIn() && incoming().title is string && incoming().title.size() <= 250;
+      allow update: if isSignedIn();
+      allow delete: if isAdmin() || (isSignedIn() && existing().authorId == request.auth.uid);
+    }
+
+    // Announcements
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow create, update, delete: if isSignedIn();
+    }
+
+    // Audit Logs
+    match /auditLogs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    // Import Logs
+    match /importLogs/{logId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+  }
+}
